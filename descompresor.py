@@ -28,7 +28,7 @@ def cargarDiccionario(archTabla):
     return diccionario
 
 #Dominio: El archivo comprimido .huff, el archivo con la tabla de frecuencias .table, y un archivo donde se va a escribir el contenido del archivo original del .huff
-#Codominio:
+#Codominio: El archivo output con el contenido del archivo original
 def descompresor(input,archTabla,output):
     diccionario = cargarDiccionario(archTabla)
     bitStr = bit.bitarray()
