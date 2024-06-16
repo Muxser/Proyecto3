@@ -1,6 +1,8 @@
 import sys
 import bitarray as bit
 
+#Dominio: El archivo con la tabla de frecuencias de cada carácter del archivo original .table
+#Codominio: Un diccionario 
 def cargarDiccionario(archTabla):
     diccionario = {}
     caminoAux = ""
@@ -25,7 +27,8 @@ def cargarDiccionario(archTabla):
 
     return diccionario
 
-
+#Dominio: El archivo comprimido .huff, el archivo con la tabla de frecuencias .table, y un archivo donde se va a escribir el contenido del archivo original del .huff
+#Codominio:
 def descompresor(input,archTabla,output):
     diccionario = cargarDiccionario(archTabla)
     bitStr = bit.bitarray()
@@ -51,4 +54,4 @@ def descompresor(input,archTabla,output):
         arch.write(textoDecod)
 
 
-descompresor("himnoUSA.txt.huff","himnoUSA.txt.table","outputDesc.txt")
+descompresor(sys.argv[1],sys.argv[2],"outputDesc.txt")

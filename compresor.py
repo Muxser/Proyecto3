@@ -1,7 +1,8 @@
 import sys
 import bitarray as bit
 
-
+#Dominio: El archivo que se quiere comprimir
+#Codominio: Un diccionario con las frecuencias de cada carácter del archivo de entrada
 def sacarFrecuencias(input):
 
     frecuencias = {}
@@ -28,7 +29,8 @@ def sacarFrecuencias(input):
     return frecuencias
 
 
-
+#Dominio: El diccionario de frecuencias de cada carácter del archivo que se quiere comprimir
+#Codominio: Un árbol tipo trie hecho en base al diccionario de frecuencias
 def trie(frecuencias):
     
     arbol = [[frecuencias[i], i] for i in frecuencias]
@@ -45,7 +47,8 @@ def trie(frecuencias):
     return arbol[0]
 
 
-
+#Dominio: El árbol tipo trie hecho en base al diccionario de frecuencias de cada carácter del archivo de entrada
+#Codominio: Un diccionario que contiene los carácter del árbol y le asigna un camino de unos y ceros desde la raíz hasta el carácter según el árbol.
 def diccionarioHuff(arbolHuff):
     diccionario = {}
     pila = [(arbolHuff,"")]
@@ -68,7 +71,8 @@ def diccionarioHuff(arbolHuff):
         
     return diccionario
 
-
+#Dominio: El árbol tipo trie hecho en base al diccionario de frecuencias de cada carácter del archivo de entrada
+#Codominio: Un entero que representa la altura del árbol tipo trie de entrada
 def altura(arbolHuff):
 
     if type(arbolHuff[1]) == str:
@@ -81,7 +85,8 @@ def altura(arbolHuff):
 
     return max(ladoI,ladoD)
 
-
+#Dominio: El árbol tipo trie hecho en base al diccionario de frecuencias de cada carácter del archivo de entrada
+#Codominio: Un entero que representa la anchura del árbol de entrada
 def anchura(arbolHuff):
     
     tamNiv = 0
@@ -106,7 +111,8 @@ def anchura(arbolHuff):
     return maxAncho
 
 
-
+#Dominio: El árbol tipo trie hecho en base al diccionario de frecuencias de cada carácter del archivo de entrada
+#Codominio: Una lista de enteros donde cada entero representa la cantidad de nodos por nivel del árbol, los niveles están definidos por los índices de la lista
 def nodos_por_nivel(arbolHuff):
     
     niv = 0
@@ -128,7 +134,8 @@ def nodos_por_nivel(arbolHuff):
     return niveles
 
 
-
+#Dominio: El diccionario generado en la función diccionarioHuff y un archivo creado apartir del archivo que se quiere comprimir con la extensión .table
+#Codominio: El archivo creado apartir del archivo que se quiere comprimir con la extensión .table con la tabla de frecuencias de cada carácter del archivo de entrada
 def archivoTabla(diccionario,archTabla):
 
     with open(archTabla,"w",encoding="utf-8") as arch:
@@ -136,7 +143,8 @@ def archivoTabla(diccionario,archTabla):
         for simbolo,camino in diccionario.items():
             arch.write(f"{simbolo}: {camino}\n")
 
-
+#Dominio: un archivo creado apartir del archivo que se quiere comprimir con la extensión .stats
+#Codominio: El archivo un archivo creado apartir del archivo que se quiere comprimir con la extensión .stas con las estadísticas del árbol
 def archivoStats(stats,archStats):
 
     with open(archStats,"w",encoding="utf-8") as arch:
@@ -144,7 +152,9 @@ def archivoStats(stats,archStats):
         for nombre,valor in stats.items():
             arch.write(f"{nombre}: {valor}\n")
 
-
+#Dominio: El archivo que se quiere comprimir, un archivo creado apartir del archivo que se quiere comprimir con la extensión .huff y el diccionario generado en la función
+# diccionarioHuff
+#Codominio: El archivo creado apartir del archivo que se quiere comprimir con la extensión .huff con la representación binaria creada a partir de comprimir el archivo
 def comprimirArchivo(input,output,diccionario):
     bitStr = bit.bitarray()
 
@@ -158,13 +168,14 @@ def comprimirArchivo(input,output,diccionario):
             if char == "\n":
                 bitStr.extend(diccionario["φ"])
             else:
-                bitStr.extend(diccionario[char]) # Podria ser .extend si no sirve
+                bitStr.extend(diccionario[char])
 
     with open(output,"wb") as arch:
         bitStr.tofile(arch)
 
 
-
+#Dominio: El diccionario de frecuencias generado de la función sacarFrecuencias
+#Codomino: Un string que representa la tabla de frecuencias
 def tablaFrecuencia(frecuencias):
     tabla = ""
 
@@ -174,7 +185,9 @@ def tablaFrecuencia(frecuencias):
     return tabla
 
 
-
+#Dominio: El archivo que se quiere comprimir
+#Codominio: El archivo comprimido con la extensión .huff, el archivo con la tabla de frecuencias con la extesnión .table y el archivo de estadísticas del árbol con la
+# extensión .stats
 def compresor_principal(input):
     frecuencia = sacarFrecuencias(input)
     arbolHuff = trie(frecuencia)
@@ -199,4 +212,3 @@ def compresor_principal(input):
 
 
 compresor_principal(sys.argv[1])
-
